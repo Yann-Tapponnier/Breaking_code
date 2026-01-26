@@ -1,6 +1,6 @@
-###################################################################################################
-                              #### Apply familly ####
-###################################################################################################
+############################################################################
+#### Apply familly ####
+############################################################################
 
 
 Sure! The **`apply` family** refers to a group of functions in **R** (and conceptually in other languages like Python too) used for **applying a function** to elements of a data structure (like vectors, lists, matrices, or data frames) **without using explicit loops**.
@@ -15,9 +15,9 @@ Sure! The **`apply` family** refers to a group of functions in **R** (and concep
   | `sapply()` | list/vector      | simplified    | Apply function, simplify result         |
   | `tapply()` | vector + factor  | array         | Grouped summary stats                   |
   | `mapply()` | multiple vectors | vector/list   | Apply function element-wise in parallel |
-
-
-Here’s a brief overview of the main `apply` family in **R**:
+  
+  
+  Here’s a brief overview of the main `apply` family in **R**:
   
   ---
   
@@ -28,7 +28,7 @@ Here’s a brief overview of the main `apply` family in **R**:
 * **Example**:
   
   
-apply(matrix, 1, sum)  # sum of each row
+  apply(matrix, 1, sum)  # sum of each row
 apply(matrix, 2, mean) # mean of each column
 
 
@@ -41,7 +41,7 @@ apply(matrix, 2, mean) # mean of each column
   * **Example**:
   
   
-lapply(list(1:5, 6:10), mean)
+  lapply(list(1:5, 6:10), mean)
 
 
 ---
@@ -53,7 +53,7 @@ lapply(list(1:5, 6:10), mean)
 * **Example**:
   
   
-sapply(list(1:5, 6:10), mean)
+  sapply(list(1:5, 6:10), mean)
 
 
 ---
@@ -64,7 +64,7 @@ sapply(list(1:5, 6:10), mean)
   * **Example**:
   
   
-tapply(iris$Sepal.Length, iris$Species, mean)
+  tapply(iris$Sepal.Length, iris$Species, mean)
 
 
 ---
@@ -75,4 +75,4 @@ tapply(iris$Sepal.Length, iris$Species, mean)
   * **Example**:
   
   
-mapply(sum, 1:3, 4:6)  # sum(1,4), sum(2,5), sum(3,6)
+  mapply(sum, 1:3, 4:6)  # sum(1,4), sum(2,5), sum(3,6)
