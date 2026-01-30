@@ -65,3 +65,11 @@ for (name in identsIwant){
 table(int_obj1@meta.data$IdentForCellChat, useNA = "ifany")
 
 
+#### Cleaning the metadata using GREP + INVERT
+names(int_obj1@meta.data)
+int_obj1@meta.data <- int_obj1@meta.data[,1:23] # Removing by column index
+# I select the INVERT of the Panglao columns to remove them before adding the clean one
+int_obj1@meta.data <- int_obj1@meta.data[,grep(pattern = "Pang|CD45", x = names(int_obj1@meta.data), invert = T)] 
+
+
+
