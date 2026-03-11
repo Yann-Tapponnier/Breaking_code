@@ -1,4 +1,4 @@
-
+# Exemple of function to correct the name in a seurat obje
 
 fixnames <- function(x){
   if(class(x)=='character'){
