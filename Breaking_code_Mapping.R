@@ -286,7 +286,7 @@ query <- ProjectUMAP(
   reduction.name = 'projected.umap'
 )
 
-# Ploting 
+############################################### Ploting ####################################################
 
 p1 <- DimPlot(reference, reduction = "umap", group.by = "orig.ident", label = TRUE, label.size = 3,
               repel = TRUE) + NoLegend() + ggtitle("Reference annotations")
