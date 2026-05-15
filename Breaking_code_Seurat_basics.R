@@ -71,22 +71,32 @@ table(int_obj1@meta.data$IdentForCellChat, useNA = "ifany")
 ################################### TRICK RMarkdown to save the html output with DIFFERENT NAMES ###################################
 ############################################################################################################## 
 # TRICK to save the html output with different names
---> RUNIT IN THE CONSOLE
-rmarkdown::render("a2_NBEI_Integration_SC_ATAC.Rmd",
-                  output_file = paste0("a2_NBEI_Integration_SC_ATAC_",sample_name,".html"))
+--> RUN IT IN R
 
-sample_name <- 'E0_PBS_ATAC'
-Min_nCount_peaks = 10000 
-Max_nCount_peaks = 100000
-Min_TSS.enrichment = 3.5
-Max_blacklist_ratio = 1.03
-Max_nucleosome_signal = 3
-Min_pct_reads_in_peaks = 30
+###### command to launch it
+folders <- list.dirs("data", full.names = FALSE, recursive = FALSE)
+#full.names = FALSE → returns just the folder names (not full paths)
+#recursive = FALSE → only immediate subfolders, not nested ones
 
-sample_name <- 'E6_DOX_ATAC'
-Min_nCount_peaks = 800 
-Max_nCount_peaks = 30000
-Min_TSS.enrichment = 3
-Max_blacklist_ratio = 0.01
-Max_nucleosome_signal = 3
-Min_pct_reads_in_peaks = 40
+for (sample_name in folders) {
+  rmarkdown::render("1_Revision_Aneta_QC.Rmd",
+                    output_file = paste0("html_export/1_Revision_Aneta_QC_", sample_name, ".html"),
+                    params = list(
+                      sample_name  = sample_name,
+                      min_nFeature = 500,
+                      max_nCount   = 60000,
+                      max_per_mt   = 4
+                    ))
+}
+
+# in the markdown : 
+---
+  title: "1_Revision_Aneta_QC"
+output: html_document
+date: "2025-12-10"
+params:
+  sample_name: "default_sample"
+min_nFeature: 500
+max_nCount: 60000
+max_per_mt: 3
+---
