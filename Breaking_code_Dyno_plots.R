@@ -5,25 +5,32 @@ https://dynverse.org/
   https://github.com/dynverse/dynmethods#list-of-included-methods
 60 available tools (includes other people package)
 
+https://github.com/dynverse/dynplot
 
 # install.packages("devtools")
 devtools::install_github("dynverse/dyno")
 
-As they were a lot of fetshing from github I created a personal token
-Personal token Github
-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
+#As they were a lot of fetshing from github I created a personal token
+#Personal token Github
+gitcreds::gitcreds_set()
 
+#library(httr2) Probleme during instalation installer manuellement avec .tgz local
+library(dyno)
+library(tidyverse) 
 
-
-library(dyno); library(tidyverse) 
 #############Constructing the Dyno object requires 4 Elements + 1 Embeding of interest
-        # 1) basic dataset
+      # 1 is the only one that is really usefull
+        # 2/3/4 are DUMMY because we provide all the already calculated information (normally calculated by DYNO)
+        
+
+
+  # 1) basic dataset
         # It requires Counts = the counts and the expression = Data = normalised counts
         dataset <- wrap_expression(counts=Matrix::t(GetAssayData(int_obj1, layer = "counts")),
                                    expression=Matrix::t(GetAssayData(int_obj1, layer = "data")))
         
         
-        # 2) # Milestone_network is milestone of the trajectory of intereset.
+  # 2) # Milestone_network is milestone of the trajectory of intereset.
         # HERE it is dummy table just to run plot_dimred()
         milestone_network <- tribble(
           ~from, ~to, ~length, ~directed,
@@ -34,7 +41,7 @@ library(dyno); library(tidyverse)
         #Show the table
         milestone_network
         
-        # 3)
+  # 3) Progression
         # It is like progression accros the milestone, like 
         # Like milestone it is require and Dummy
         
@@ -50,7 +57,7 @@ library(dyno); library(tidyverse)
         progressions
         # Give you the "from where to where" and the % is the % of progression among this segment of road !
         
-        #4)
+   #4) Bifurcation
         # Dummy again for the bifurcation
         divergence_regions <- tribble(
           ~divergence_id, ~milestone_id, ~is_start,
@@ -83,8 +90,44 @@ DR <- data.frame(cell_id=colnames(int_obj1), int_obj1[['umap']]@cell.embeddings[
 
 
 
-################################################################################################
-Ploting
+
+###################################### Color palette ##########################################################
+
+#########  IBM pallette x5 ######### 
+IBM_palette <- c('#648FFF', '#785EF0', '#DC267F', '#FE6100', '#FFB000', '#808080' )
+IBM_palette_3 <- IBM_palette[c(1,3,5)]
+
+
+########## Khroma package and other for the colorblind palettes #########
+
+library(khroma)
+
+bright <- color("bright")
+plot_scheme(bright(7), colours = TRUE, names = TRUE, size = 0.9)
+bright_6 <- bright(6)
+bright_6 <- as.character(bright_6)
+plot_scheme(bright_6, colours = TRUE, names = TRUE, size = 0.9)
+
+highcontrast <- color("high contrast")
+plot_scheme(highcontrast(3), colours = TRUE, names = TRUE, size = 0.9)
+highcontrast_3 <- highcontrast(3)
+
+nightfall <- color('nightfall')
+nghtfall_4 <- nightfall(4)
+
+vibrant <- color("vibrant")
+plot_scheme(vibrant(7), colours = TRUE, names = TRUE, size = 0.9)
+vibrant_6 <- vibrant(6)
+
+
+```
+
+
+
+
+
+###################################### Ploting ##########################################################
+
 #png(filename = "~/Analyses/scRNAseq/Oiseau/Oiseau_small_basic.png", width = 5, height = 5, units = 'in', res=300)
 plot_dimred(trajectory, 
                   dimred = DR, 
