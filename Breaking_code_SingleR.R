@@ -1,5 +1,3 @@
-
-
 ## SingleR
 SingleR is used to label cells
 The point here is to check whether a particular identity is attributed to the outlayers cells before removing them
