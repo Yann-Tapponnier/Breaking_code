@@ -1,0 +1,174 @@
+---
+title: "Breaking_code_Cytotrace2"
+output: html_document
+date: "2026-05-20"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,
+                      eval = TRUE,
+                      include = TRUE,
+                      message = FALSE,
+                      warning = FALSE)
+
+```
+
+
+
+
+```{r, include=FALSE, eval=TRUE}
+
+# Loading all libraries 
+source("/Users/administrateur/Desktop/Bio_info/My_codes/My_library_to_source.R")
+
+# THIS WILL IMPORT ALL EMILE'S FUNCTION !!!
+source('/Users/administrateur/Desktop/Bio_info/My_codes/Emile_s_functions_single_cell.R')
+source("/Users/administrateur/Desktop/Bio_info/My_codes/My_homemade_functions/My_Functions_to_source.R")
+FolderCreationR()  
+```
+
+
+
+
+## Importing Data
+###### Importing and saving ongoing data
+```{r}
+#int_obj1 initial = 2_int_obj
+int_obj1 <- qread("output_seurat/4_int_obj1_join_vanilla_Reg_nCount_MT_CCdiff_INPROGRESS.qs", nthreads = 12)
+
+
+
+```
+
+
+#### RESSOUCRES 
+https://github.com/digitalcytometry/cytotrace2?tab=readme-ov-file
+
+
+```{r}
+  devtools::install_github("digitalcytometry/cytotrace2", subdir = "cytotrace2_r") #installing
+  library(CytoTRACE2) #loading
+```
+
+
+## Vignette 2
+ATTENTION : for SEURAT_OBJ --> Vignette 2: Human cord blood mononuclear cells (Seurat object input, ~2 minutes) 
+```{r}
+# DO NOT LOAD ALL THE LIBRARIES A USUALLY
+library(CytoTRACE2)
+
+# running CytoTRACE 2 main function - cytotrace2
+# setting is_seurat = TRUE as input is a Seurat object
+# setting slot_type = "counts" as the gene expression data is stored in the "counts" slot of the Seurat object
+# setting species = 'human' 
+cytotrace2_result <- cytotrace2(int_obj1, is_seurat = TRUE, slot_type = "counts", species = 'human')
+
+# making an annotation dataframe that matches input requirements for plotData function
+annotation <- data.frame(phenotype = int_obj1@meta.data$orig.ident) %>% set_rownames(., colnames(int_obj1))
+
+# plotting
+plots <- plotData(cytotrace2_result = cytotrace2_result, 
+                  annotation = annotation, 
+                  is_seurat = TRUE)
+
+for (i in seq_along(plots)) {
+  png(
+    filename = paste0("report/10_cytoTRACE2/CytoTrace2_plot_", i, ".png"),
+    width = 2400,
+    height = 1000,
+    res = 100
+  )
+  print(plots[[i]])
+  dev.off()
+}
+
+plots
+
+
+```
+
+
+#### RESSOUCRES 
+https://github.com/digitalcytometry/cytotrace2?tab=readme-ov-file
+
+
+```{r, eval=FALSE}
+  devtools::install_github("digitalcytometry/cytotrace2", subdir = "cytotrace2_r") #installing
+  library(CytoTRACE2) #loading
+```
+
+
+## Vignette 2
+ATTENTION : for SEURAT_OBJ --> Vignette 2: Human cord blood mononuclear cells (Seurat object input, ~2 minutes) 
+```{r}
+# DO NOT LOAD ALL THE LIBRARIES A USUALLY
+library(CytoTRACE2)
+
+# running CytoTRACE 2 main function - cytotrace2
+# setting is_seurat = TRUE as input is a Seurat object
+# setting slot_type = "counts" as the gene expression data is stored in the "counts" slot of the Seurat object
+# setting species = 'human' 
+cytotrace2_result <- cytotrace2(int_obj1, is_seurat = TRUE, slot_type = "counts", species = 'human')
+
+# making an annotation dataframe that matches input requirements for plotData function
+annotation <- data.frame(phenotype = int_obj1@meta.data$orig.ident) %>% set_rownames(., colnames(int_obj1))
+
+# plotting
+plots <- plotData(cytotrace2_result = cytotrace2_result, 
+                  annotation = annotation, 
+                  is_seurat = TRUE)
+
+for (i in seq_along(plots)) {
+  png(
+    filename = paste0("report/10_cytoTRACE2/CytoTrace2_plot_", i, ".png"),
+    width = 2400,
+    height = 1000,
+    res = 100
+  )
+  print(plots[[i]])
+  dev.off()
+}
+
+plots
+
+
+```
+
+
+### Potency score
+UMAP embedding of predicted absolute potency score, which is a continuous value ranging from 0 (differentiated) to 1 (totipotent), indicating the absolute developmental potential of each cell. As expected, hematopoietic stem and progenitor cells have much higher potency compared to other phenotypes, which are mostly mature differentiated cells and are predicted as such.
+```{r}
+  plots$CytoTRACE2_UMAP
+```
+
+### Potency category
+UMAP embedding of predicted potency category, reflecting the discrete classification of cells into potency categories, taking possible values of Differentiated, Unipotent, Oligopotent, Multipotent, Pluripotent, and Totipotent.
+
+```{r}
+plots$CytoTRACE2_Potency_UMAP
+```
+
+
+###Relative order
+UMAP embedding of predicted relative order, which is based on absolute predicted potency scores normalized to the range 0 (more differentiated) to 1 (less differentiated). Provides the relative ordering of cells by developmental potential.
+
+```{r}
+plots$CytoTRACE2_Relative_UMAP
+```
+
+
+### Phenotypes
+UMAP colored by phenotype annotation. Used to assess the distribution of cell phenotypes across the UMAP space.
+
+```{r}
+plots$Phenotype_UMAP
+```
+
+### Potency score distribution by phenotype
+A boxplot of predicted potency score separated by phenotype/group from the annotation file. Can be used to assess the distribution of predicted potency scores across different cell phenotypes.
+
+```{r}
+plots$CytoTRACE2_Boxplot_byPheno
+```
+
+

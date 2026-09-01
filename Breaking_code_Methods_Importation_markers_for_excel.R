@@ -16,11 +16,18 @@ List_Makers <- setNames(
 # Getting sheetsNames
 sheets <- getSheetNames("/Users/administrateur/Desktop/Bio_info/Data and supp data from paper/Belmonte_2025/ScienceDirect_files_30Jan2026_10-10-32.888/1-s2.0-S0092867425008530-mmc3.xlsx")
 
-# Importing all sheets as a list 
+# Importing all sheets as a list of data frames
 Belmonte_all <- lapply(
   sheets,
   function(s) read.xlsx("/Users/administrateur/Desktop/Bio_info/Data and supp data from paper/Belmonte_2025/ScienceDirect_files_30Jan2026_10-10-32.888/1-s2.0-S0092867425008530-mmc3.xlsx", sheet = s)
-)
+) 
+
+# Making a named list of VECTOR from the imported sheets to be able to run directly GENSETS in AddSignatureAUCscoreSeuratObject()
+Belmonte_all <- setNames(
+    lapply(Belmonte_all, \(x) x %>% pull), #
+    names(Sheets)
+  )
+
 
 
 # from groups to list
