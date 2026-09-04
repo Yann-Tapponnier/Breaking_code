@@ -74,6 +74,8 @@ Apoptosis_HS <- HALLMARKS_HS %>% filter(gs_name == "HALLMARK_APOPTOSIS") %>%  pu
 genesetmH <- msigdbr(species = "mouse", collection = "H") # (gather the human MSigDB with ortholog mapping to mouse )
 genesetMM <- msigdbr(species = "mouse", collection = "MH", db_species = "MM")
 
+HALLMARKS <- genesetMM$gs_name %>% unique() # extracting ALL Hallmarks name
+
 ### Testing the difference between MH and H (converted to mouse)
 apoptosisMM <- genesetMM %>% filter(gs_name == "HALLMARK_APOPTOSIS") %>%  pull(gene_symbol)
 apoptosismH <- genesetmH %>% filter(gs_name == "HALLMARK_APOPTOSIS") %>%  pull(gene_symbol)
