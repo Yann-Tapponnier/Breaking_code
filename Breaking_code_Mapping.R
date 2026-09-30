@@ -307,3 +307,78 @@ dev.off()
 
 
 
+
+
+################## MERGING FOR PLOTING TOGETHER ####################
+query <- UpdateSeuratObject(query)
+
+DefaultAssay(reference) <- "RNA"
+DefaultAssay(query) <- "RNA"
+
+# Merge fails because of SCT assay presence, it always trys to merge all assays.
+reference[["SCT"]] <- NULL
+query[["SCT"]] <- NULL
+
+query@version
+reference@version
+# Merging both for plotting
+#merge reference and query
+reference$id <- 'reference'
+
+
+refquery <- merge(reference, query)
+refquery[["RNA"]] <- JoinLayers(refquery[["RNA"]])
+
+#refquery[["umap"]] <- merge(reference[["umap"]], query[["ref.umap"]])
+
+umap_combined <- CreateDimReducObject(embeddings = rbind(reference[["umap"]]@cell.embeddings, query[["ref.umap"]]@cell.embeddings))
+
+refquery[["umap"]] <- umap_combined
+DimPlot(refquery, group.by = 'id', reduction = "umap", shuffle = TRUE)
+
+refquery$id[["query"]]
+
+
+
+
+#merge reference and query
+reference$id <- 'reference'
+query$id <- 'query'
+refquery <- merge(reference, query)
+refquery[["pca"]] <- merge(reference[["pca"]], query[["ref.pca"]])
+refquery <- RunUMAP(refquery, reduction = 'pca', dims = 1:20)
+DimPlot(refquery, group.by = c('id',"BAM"), shuffle = TRUE)
+
+png(filename = paste0("report/3_NK_integration_clustering/Mapping_In_Vitro_on_Villalard_merged4.png"), width = 2000, height = 1000, res=100 )
+  DimPlot(refquery, group.by = c('idents',"BAM"), shuffle = TRUE, label = T)
+dev.off()
+
+
+                                      ############### Specific ploting and exemple of a project
+                                      hist(query@meta.data$predicted.id.score)
+                                      png(filename = paste0("report/3_NK_integration_clustering/Mapping_In_Vitro_on_Villalard_feature6.png"), width = 2000, height = 1000, res=100 )
+                                      FeaturePlot(refquery, features = c("predicted.id.score"), split.by = ("BAM"), reduction = "umap")
+                                      dev.off()
+                                      
+                                      
+                                      barplot(table(refquery$predicted.id))
+                                      BAM_plus <- subset(refquery, BAM == "(+)") 
+                                      BAM_minus <- subset(refquery, BAM == "(-)")
+                                      
+                                      
+                                      
+                                      png(filename = paste0("report/3_NK_integration_clustering/Mapping_In_Vitro_on_Villalard_Hist7_Score.png"), width = 2000, height = 1000, res=100 )
+                                      hist(BAM_plus$predicted.id.score, breaks = 25, 
+                                           main = "BAM+ in red, BAM- in blue", 
+                                           xlab = "Predicted id score", 
+                                           col = rgb(0, 0, 1, 0.5))  # Bleu transparent
+                                      hist(BAM_minus$predicted.id.score, breaks = 25, add = TRUE, 
+                                           col = rgb(1, 0, 0, 0.5))  # Rouge transparent
+                                      dev.off()
+
+
+
+
+
+
+

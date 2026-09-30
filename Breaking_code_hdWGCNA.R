@@ -43,6 +43,10 @@ for (pkg in bioc_packages) {
   
   
   ################### TUTO on single-RNA-SEQ #######################
+# General Links with ALL sub tutorials
+https://smorabit.github.io/hdWGCNA/articles/hdWGCNA.html
+  
+# Specific tutorial to start  
 https://smorabit.github.io/hdWGCNA/articles/basic_tutorial.html
 # single-cell analysis package
 library(Seurat)

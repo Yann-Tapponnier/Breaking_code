@@ -66,6 +66,33 @@ table(int_obj1@meta.data$IdentForCellChat, useNA = "ifany")
 
 
 
+#############################################################################################
+################################### Factor level ###################################
+############################################################################################# 
+
+unique(int_obj2$orig.ident)
+# Factor level Orig.ident
+int_obj2@meta.data$orig.ident <- factor(
+  as.character(int_obj2@meta.data$orig.ident),
+  levels = c("E0_PBS", "E6_PBS", "E6_DOX","E10_PBS", "E10_DOX","E14_PBS", "E14_DOX"),  ordered = TRUE)
+
+int_obj2$orig.ident <- factor(
+  as.character(int_obj2$orig.ident),
+  levels = c("E0_PBS", "E6_PBS", "E6_DOX","E10_PBS", "E10_DOX","E14_PBS", "E14_DOX"),  ordered = TRUE)
+
+is.ordered(int_obj2$orig.ident)#  --> MARCHE PAS
+is.ordered(int_obj2@meta.data$orig.ident) # MARCHE !!!!
+class(int_obj2)
+
+names(int_obj2@meta.data)
+
+
+
+
+
+
+
+
 
 ##############################################################################################################
 ################################### TRICK RMarkdown to save the html output with DIFFERENT NAMES ###################################
